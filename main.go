@@ -1,24 +1,41 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"os"
 
+	"fmt"
+
+	"github.com/snackmgmg/drybq/command/query"
 	"github.com/urfave/cli"
 )
 
 func main() {
 	app := cli.NewApp()
+	// command name is `drybq`
 	app.Name = "drybq"
-	app.Usage = "simple command for bq dry-run"
-	app.Action = func(c *cli.Context) error {
-		fmt.Println("Hello Kotori-chan!")
-		return nil
+	app.Usage = "simple command for bq dry-run with useful info"
+	app.Version = "0.0.1"
+	app.EnableBashCompletion = true
+	app.Commands = []cli.Command{
+		{
+			// subcommand #1: query, this command returns processing byte and cost
+			Name:   "query",
+			Usage:  "query for dry-run and useful info",
+			Action: query.Run,
+			Flags: []cli.Flag{
+				cli.BoolFlag{
+					Name:  "try, t",
+					Usage: "execute query after checked dry-run result.",
+				},
+				cli.BoolFlag{
+					Name:  "force, f",
+					Usage: "force execute query. must be use with 'try' flag",
+				},
+			},
+		},
 	}
-
 	err := app.Run(os.Args)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Printf("error: %v", err)
 	}
 }
