@@ -5,6 +5,7 @@ import (
 
 	"fmt"
 
+	"github.com/snackmgmg/drybq/command/bulk"
 	"github.com/snackmgmg/drybq/command/query"
 	"github.com/urfave/cli"
 )
@@ -32,6 +33,12 @@ func main() {
 					Usage: "force execute query. must be use with 'try' flag",
 				},
 			},
+		},
+		{
+			// subcommand #2: bulk, this command returns processing byte and cost from csv to csv
+			Name:   "bulk",
+			Usage:  "bulk import for csv, and for dry-run with useful info",
+			Action: bulk.Run,
 		},
 	}
 	err := app.Run(os.Args)
