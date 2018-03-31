@@ -2,8 +2,6 @@ package query
 
 import (
 	"fmt"
-	"regexp"
-	"strconv"
 
 	"bufio"
 	"os"
@@ -12,9 +10,6 @@ import (
 	"github.com/snackmgmg/drybq/utils"
 	"github.com/urfave/cli"
 )
-
-// ToDo: read from config file
-const COSTPERTB = 5.0
 
 func Run(c *cli.Context) error {
 	origin := fmt.Sprintf("bq query --dry_run %s", utils.CombineStrings(c.Args(), ""))
@@ -49,11 +44,11 @@ func execute(str string, isDry bool) error {
 	}
 	result := ""
 	if isDry {
-		queryBytes, err := getQueryBytes(string(out))
+		queryBytes, err := utils.GetQueryBytes(string(out))
 		if err != nil {
 			return err
 		}
-		cost, err := getCost(queryBytes)
+		cost, err := utils.GetCost(queryBytes)
 		if err != nil {
 			return err
 		}
@@ -64,26 +59,4 @@ func execute(str string, isDry bool) error {
 	}
 	fmt.Printf("%s\n", result)
 	return nil
-}
-
-func getQueryBytes(str string) (string, error) {
-	regex := regexp.MustCompile(`running this query will process (\d+) bytes of data.`)
-	queryBytes := regex.FindStringSubmatch(string(str))
-	if len(queryBytes) != 2 {
-		return "", fmt.Errorf("unexpected result: bytes count is %d, must be %d", len(queryBytes), 1)
-	}
-	return queryBytes[1], nil
-}
-
-func getCost(size string) (float64, error) {
-	sizeInt, err := strconv.Atoi(size)
-	if err != nil {
-		return 0.0, err
-	}
-	tByte := convertByteToTByte(float64(sizeInt))
-	return COSTPERTB * tByte, nil
-}
-
-func convertByteToTByte(b float64) float64 {
-	return b / (1024 * 1024 * 1024 * 1024)
 }
