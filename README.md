@@ -6,6 +6,9 @@ Simple and Useful CLI-Tools for BigQuery.
 
 # Installation
 
+This command require bq command-line tool.
+
+
 ```
 go get github.com/snackmgmg/drybq
 ```
@@ -40,4 +43,23 @@ If use this flag with `--try`, can execute same query and get result without inp
 ```
 drybq query --try "[some query]"
 [result]
+```
+
+## bulk
+
+This command is dryrun for many queries.
+Get cost and size using the csv file with queries.
+
+### csv format
+
+```
+[query1]
+[query2]
+[query3]
+```
+
+### command
+
+```
+drybq bulk queries.csv > result.csv
 ```
