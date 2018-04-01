@@ -2,12 +2,13 @@ package utils
 
 import (
 	"fmt"
+	"math"
 	"os/exec"
 	"regexp"
 	"strconv"
 )
 
-var EPSILON = 0.00000001
+var floatDiff = 0.00000000001
 
 // ToDo: read from config file
 const COSTPERTB = 5.0
@@ -41,12 +42,9 @@ func MakeCmd(strs []string) (*exec.Cmd, error) {
 	return nil, fmt.Errorf("unexpected error raised")
 }
 
-// FloatEquals is compare two float value
-func FloatEquals(a, b float64) bool {
-	if (a-b) < EPSILON && (b-a) < EPSILON {
-		return true
-	}
-	return false
+// IsEqualFloat is compare two float value
+func IsEqualFloat(a, b float64) bool {
+	return math.Abs(a-b) < floatDiff
 }
 
 // GetQueryBytes is get query byte size

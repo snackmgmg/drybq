@@ -38,7 +38,7 @@ func TestMakeCmd(t *testing.T) {
 	}
 }
 
-func TestFloatEquals(t *testing.T) {
+func TestIsEqualFloat(t *testing.T) {
 	target := 0.1
 
 	target *= 3.0
@@ -49,7 +49,10 @@ func TestFloatEquals(t *testing.T) {
 		t.Fatalf("%f not equal %f with calculation error", target, 0.3)
 	}
 
-	if !utils.FloatEquals(target, 0.3) {
+	if !utils.IsEqualFloat(target, 0.3) {
+		t.Fatalf("unexpected result: target is %f", target)
+	}
+	if utils.IsEqualFloat(target, 0.3+utils.FloatDiff*2) {
 		t.Fatalf("unexpected result: target is %f", target)
 	}
 }
@@ -57,7 +60,7 @@ func TestFloatEquals(t *testing.T) {
 func TestConvertByteToTByte(t *testing.T) {
 	target := 1099511627776
 	estimate := 1.0
-	if r := utils.ConvertByteToTByte(float64(target)); !utils.FloatEquals(r, estimate) {
+	if r := utils.ConvertByteToTByte(float64(target)); !utils.IsEqualFloat(r, estimate) {
 		t.Fatalf("get: %f, want: %f", r, estimate)
 	}
 }
@@ -70,7 +73,7 @@ func TestGetCost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error raised: %v", err)
 	}
-	if r := cost; !utils.FloatEquals(r, estimate) {
+	if r := cost; !utils.IsEqualFloat(r, estimate) {
 		t.Fatalf("get: %f, want: %f", r, estimate)
 	}
 }
