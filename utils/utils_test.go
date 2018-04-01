@@ -52,6 +52,9 @@ func TestIsEqualFloat(t *testing.T) {
 	if !utils.IsEqualFloat(target, 0.3) {
 		t.Fatalf("unexpected result: target is %f", target)
 	}
+	if utils.IsEqualFloat(target, 0.3+utils.FloatDiff*2) {
+		t.Fatalf("unexpected result: target is %f", target)
+	}
 }
 
 func TestConvertByteToTByte(t *testing.T) {
