@@ -29,8 +29,8 @@ func main() {
 					Usage: "Execute query after checked dry-run result.",
 				},
 				cli.BoolFlag{
-					Name:  "Force, f",
-					Usage: "force execute query. must be use with 'try' flag",
+					Name:  "force, f",
+					Usage: "Force execute query. must be use with 'try' flag",
 				},
 			},
 		},
