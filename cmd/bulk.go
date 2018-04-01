@@ -1,4 +1,4 @@
-package bulk
+package cmd
 
 import (
 	"bufio"
@@ -20,7 +20,7 @@ type QueryInfo struct {
 	result string
 }
 
-func Run(c *cli.Context) error {
+func Bulk(c *cli.Context) error {
 	fname := c.Args().Get(0)
 	if fname == "" {
 		return fmt.Errorf("must be given file name")
@@ -36,7 +36,7 @@ func Run(c *cli.Context) error {
 		e := fmt.Sprintf("bq query --dry_run %s", query)
 		queries = append(queries, &QueryInfo{query: query, exec: e})
 	}
-	err = execute(queries)
+	err = bulkExecute(queries)
 	if err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func makeCSV(queries []*QueryInfo) string {
 	return result
 }
 
-func execute(queries []*QueryInfo) error {
+func bulkExecute(queries []*QueryInfo) error {
 	if len(queries) == 0 {
 		return fmt.Errorf("don't exist target queries")
 	}

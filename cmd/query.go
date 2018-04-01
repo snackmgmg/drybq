@@ -1,4 +1,4 @@
-package query
+package cmd
 
 import (
 	"fmt"
@@ -11,20 +11,20 @@ import (
 	"github.com/urfave/cli"
 )
 
-func Run(c *cli.Context) error {
+func Query(c *cli.Context) error {
 	origin := fmt.Sprintf("bq query --dry_run %s", utils.CombineStrings(c.Args(), ""))
-	err := execute(origin, true)
+	err := queryExecute(origin, true)
 
 	if c.Bool("try") {
 		force := fmt.Sprintf("bq query %s", utils.CombineStrings(c.Args(), ""))
 		if c.Bool("force") {
-			err = execute(force, false)
+			err = queryExecute(force, false)
 		} else {
 			stdin := bufio.NewScanner(os.Stdin)
 			print("execute this query?(Y/N): ")
 			stdin.Scan()
 			if stdin.Text() == "Y" || stdin.Text() == "y" {
-				err = execute(force, false)
+				err = queryExecute(force, false)
 			}
 		}
 	}
@@ -32,7 +32,7 @@ func Run(c *cli.Context) error {
 	return err
 }
 
-func execute(str string, isDry bool) error {
+func queryExecute(str string, isDry bool) error {
 	args, err := shellwords.Parse(str)
 	cmd, err := utils.MakeCmd(args)
 	if err != nil {
