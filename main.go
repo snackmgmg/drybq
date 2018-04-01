@@ -5,8 +5,7 @@ import (
 
 	"fmt"
 
-	"github.com/snackmgmg/drybq/command/bulk"
-	"github.com/snackmgmg/drybq/command/query"
+	"github.com/snackmgmg/drybq/cmd"
 	"github.com/urfave/cli"
 )
 
@@ -14,23 +13,24 @@ func main() {
 	app := cli.NewApp()
 	// command name is `drybq`
 	app.Name = "drybq"
-	app.Usage = "simple command for bq dry-run with useful info"
+	app.Usage = "Simple command for bq dry-run with useful info"
+	app.UsageText = "drybq command [command options] [arguments...]"
 	app.Version = "0.0.1"
 	app.EnableBashCompletion = true
 	app.Commands = []cli.Command{
 		{
 			// subcommand #1: query, this command returns processing byte and cost
 			Name:   "query",
-			Usage:  "query for dry-run and useful info",
-			Action: query.Run,
+			Usage:  "Command for bq dry-run and useful info",
+			Action: cmd.Query,
 			Flags: []cli.Flag{
 				cli.BoolFlag{
 					Name:  "try, t",
-					Usage: "execute query after checked dry-run result.",
+					Usage: "Execute query after checked dry-run result.",
 				},
 				cli.BoolFlag{
 					Name:  "force, f",
-					Usage: "force execute query. must be use with 'try' flag",
+					Usage: "Force execute query. must be use with 'try' flag",
 				},
 			},
 		},
@@ -38,7 +38,7 @@ func main() {
 			// subcommand #2: bulk, this command returns processing byte and cost from csv to csv
 			Name:   "bulk",
 			Usage:  "bulk import for csv, and for dry-run with useful info",
-			Action: bulk.Run,
+			Action: cmd.Bulk,
 		},
 	}
 	err := app.Run(os.Args)
