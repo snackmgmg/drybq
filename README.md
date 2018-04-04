@@ -10,7 +10,7 @@ This command require bq command-line tool.
 
 
 ```
-go get github.com/snackmgmg/drybq
+go get -u github.com/snackmgmg/drybq
 ```
 
 # Usage
@@ -41,7 +41,7 @@ execute this query?(Y/N): y
 If use this flag with `--try`, can execute same query and get result without input.
 
 ```
-drybq query --try "[some query]"
+drybq query --try --force "[some query]"
 [result]
 ```
 
