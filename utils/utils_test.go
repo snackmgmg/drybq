@@ -27,12 +27,12 @@ func TestCombineStrings(t *testing.T) {
 }
 
 func TestMakeCmd(t *testing.T) {
-	target := []string{"ls", "-l", "-a", "-h"}
+	target := "hoge -h -o -g (123) -e '%s'"
 	result, err := utils.MakeCmd(target)
 	if err != nil {
 		t.Fatalf("error raised: %v", err)
 	}
-	expected := exec.Command("ls", "-l", "-a", "-h")
+	expected := exec.Command("hoge", "-h", "-o", "-g", "(123)", "-e", "'%s'")
 	if r := result; !reflect.DeepEqual(r, expected) {
 		t.Fatalf("made command and expected command are unmatched")
 	}

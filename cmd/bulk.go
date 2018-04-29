@@ -7,7 +7,6 @@ import (
 
 	"strings"
 
-	"github.com/mattn/go-shellwords"
 	"github.com/snackmgmg/drybq/utils"
 	"github.com/urfave/cli"
 )
@@ -62,11 +61,7 @@ func bulkExecute(queries []*QueryInfo) error {
 		return fmt.Errorf("don't exist target queries")
 	}
 	for i, q := range queries {
-		args, err := shellwords.Parse(q.exec)
-		if err != nil {
-			return fmt.Errorf("line %d, %v", i+1, err)
-		}
-		cmd, err := utils.MakeCmd(args)
+		cmd, err := utils.MakeCmd(q.exec)
 		if err != nil {
 			return fmt.Errorf("line %d, %v", i+1, err)
 		}
