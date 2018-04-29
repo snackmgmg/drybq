@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 var floatDiff = 0.00000000001
@@ -29,7 +30,11 @@ func CombineStrings(strs []string, sep string) string {
 }
 
 // MakeCmd is make command from args
-func MakeCmd(strs []string) (*exec.Cmd, error) {
+func MakeCmd(origin string) (*exec.Cmd, error) {
+	if len(origin) == 0 {
+		return nil, fmt.Errorf("must be one or more commands")
+	}
+	strs := strings.Fields(origin)
 	switch len(strs) {
 	case 0:
 		return nil, fmt.Errorf("executable command not found")

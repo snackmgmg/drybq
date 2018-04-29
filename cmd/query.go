@@ -6,7 +6,6 @@ import (
 	"bufio"
 	"os"
 
-	"github.com/mattn/go-shellwords"
 	"github.com/snackmgmg/drybq/utils"
 	"github.com/urfave/cli"
 )
@@ -40,8 +39,7 @@ func queryExecute(args string, isDry bool) error {
 		base = dryBase
 	}
 	origin := fmt.Sprintf(base, args)
-	parsed, err := shellwords.Parse(origin)
-	cmd, err := utils.MakeCmd(parsed)
+	cmd, err := utils.MakeCmd(origin)
 	if err != nil {
 		return err
 	}
